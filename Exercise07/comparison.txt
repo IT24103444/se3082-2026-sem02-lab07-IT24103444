@@ -1,5 +1,16 @@
 Exercise 7 - Comparison of MPI Collective Operations
 
+Program Comparison
+
+Program     Collectives Used       Array Allocation          Manual Root Sum?    Final Result
+------------------------------------------------------------------------------------------------
+Bcast       Bcast + Send/Recv      Full array on all ranks   Yes                 Root only
+Scatter     Scatter + Send/Recv    Chunk on each rank        Yes                 Root only
+Gather      Scatter + Gather       Chunk on each rank        Yes                 Root only
+Reduce      Scatter + Reduce       Chunk on each rank        No                  Root only
+Allreduce   Scatter + Allreduce    Chunk on each rank        No                  All processes
+Scan        Scatter + Scan         Chunk on each rank        No                  Different per rank
+
 Timing Results
 
 Program       2 Processes    4 Processes    8 Processes
