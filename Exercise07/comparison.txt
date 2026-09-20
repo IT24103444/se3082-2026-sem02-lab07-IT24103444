@@ -1,0 +1,40 @@
+Exercise 7 - Comparison of MPI Collective Operations
+
+Timing Results
+
+Program       2 Processes    4 Processes    8 Processes
+--------------------------------------------------------
+Bcast         0.0058 sec     0.0122 sec     0.0146 sec
+Scatter       0.0059 sec     0.0071 sec     0.0061 sec
+Gather        0.0062 sec     0.0051 sec     0.0066 sec
+Reduce        0.0062 sec     0.0053 sec     0.0077 sec
+Allreduce     0.0063 sec     0.0048 sec     0.0049 sec
+Scan          0.0062 sec     0.0062 sec     0.0052 sec
+
+All programs produced the correct total sum:
+500000500000
+
+Observations
+
+For these test runs, Allreduce had the lowest measured time with
+4 processes and 8 processes. Bcast became slower as the number of
+processes increased.
+
+The timings do not show consistent speedup when more processes are
+used. The EC2 t3.micro instance has 2 vCPUs, so the 4-process and
+8-process tests were run using oversubscription. Therefore, multiple
+MPI processes had to share the available CPU resources.
+
+Thinking Question
+
+When would MPI_Scan be useful instead of MPI_Allreduce?
+
+MPI_Scan is useful when each process needs a cumulative result based
+on its rank, rather than the same final result on every process.
+
+For example, if each process calculates the number of items it will
+store, MPI_Scan can calculate cumulative totals that can be used to
+determine positions or offsets for the processes.
+
+MPI_Allreduce is different because it calculates one global result
+and gives that same result to every process.
